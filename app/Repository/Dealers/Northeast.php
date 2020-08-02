@@ -4,6 +4,7 @@ namespace App\Repository\Dealers;
 
 use Illuminate\Support\Arr;
 use GuzzleHttp\Client as HttpClient;
+use App\Models;
 use GuzzleHttp\Exception\ClientException;
 
 /**
@@ -105,5 +106,42 @@ class Northeast
         }
 
         return $dealerResults;
+    }
+
+    /**
+     * 推送销售线索
+     */
+    public function pushRecord(Models\Activity $activity,Models\DriveReservation $record)
+    {
+        try {
+            $response = $this->httpClient->request('POST', '/app/api2.php', [
+                'query' => [
+                    'act' => 'clue',
+                ], 
+                'form_params' => [
+                    'name' => $record->name,
+                    'tel' => $record->mobile,
+                    'province_name' => $record->province,
+                    'city_name' => $record->city,
+                    'dealer_name' => $record->dealer,
+                    'dealer' => $record->dealer_code,
+                    'activity_id' => $activity->code,
+                    'media_id' => Arr::get($activity->config, 'media_id', ''),
+                    'utm_source' => Arr::get($activity->config, 'utm_source', ''),
+                    'utm_content' => Arr::get($activity->config, 'utm_content', ''),
+                    'utm_medium' => Arr::get($activity->config, 'utm_medium', ''),
+                    'utm_campaign' => Arr::get($activity->config, 'utm_campaign', ''),
+                    'referer' => Arr::get($activity->config, 'referer', ''),
+                ]
+            ]);
+            $result = json_decode($response->getBody()->getContents(), true);
+            if(empty($result) || Arr::get($result, 'status') != 200) {
+                throw new \Exception('推送响应异常:' . Arr::get($result, 'message', ''), 1);
+            }
+        } catch (ClientException $e) {
+            throw new \Exception($e->getMessage(), 1);
+        }
+
+        return true;
     }
 }

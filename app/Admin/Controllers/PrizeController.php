@@ -17,7 +17,7 @@ class PrizeController extends AdminController
      *
      * @var string
      */
-    protected $title = 'Prize';
+    protected $title = '奖品';
 
     /**
      * Make a grid builder.
@@ -135,7 +135,7 @@ class PrizeController extends AdminController
         // 保存回调
         $form->saved(function (Form $form) {
             // 设置奖品组的缓存
-            $prizes = Prize::where('status', '=', '1')->where('group_id', '=', $form->model()->group_id)->get();
+            $prizes = Prize::where('status', '=', '1')->where('group_id', '=', $form->model()->group_id)->orderBy('sort', 'ASC')->get();
             Redis::set('PRIZE_GROUP_PRIZES_' . $form->model()->group_id, serialize($prizes));
         });
 

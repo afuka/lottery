@@ -8,8 +8,12 @@ use App\Service\ErrEnum;
 use Illuminate\Support\Facades\Redis;
 use App\Models\DriveReservation;
 
+/**
+ * 预约试驾
+ */
 class DriveReservationController extends Controller
 {
+    // 留资
     public function create(Request $request)
     {
         if(empty($request->get('name', ''))) return $this->result(ErrEnum::PARAM_ERR, '请填写姓名', []);
@@ -56,6 +60,16 @@ class DriveReservationController extends Controller
             Redis::del($existsKey);
             return $this->result(ErrEnum::DB_ERR, $e->getMessage(), []);
         }
+
+        // 记录这条留资缓存
+        $recordCacheKey = 'DRIVE_RESERVATION_INFO_' . $id;
+        Redis::setex($recordCacheKey, 3600, json_encode_zw([
+            'activity_id' => $request->activity->id,
+            'source' => $request->get('source', 'default'),
+            'name' => $request->get('name'),
+            'mobile' => $request->get('mobile'),
+            'car' => $request->get('car'),
+        ]));
 
         return $this->result(0, 'success', [
             'source_id' => $id, // 记录id

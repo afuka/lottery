@@ -95,13 +95,23 @@ class PrizeGroupController extends AdminController
 
         $form->radio('user_limit_mode', '中奖限制')->options([
             'no' => '不限制', 'once_per_group' => '每个奖品组一次', 'once_per_activity' => '每个活动一次'
-        ])->default('no');
+        ])->default('no')->help('注意该限制只作用域设置生效之后的数据,若之前没设置时产生的数据不计入限制');
 
         $form->radio('status', '状态')->options([
             '0' => '停用', '1' => '启用'
         ])->default('1')->help('活动配置以key=>value形式配置，请在专人指导下配置');
         
-        $form->keyValue('config', '奖品组配置');
+        /**
+         * config 的 配置说明
+         *      source_type 限制抽奖资格获取来源
+         *      limit_times 限制抽奖资格次数
+         */
+        $form->embeds('config', '奖品组配置', function($form) {
+            $form->radio('source_type', '限制抽奖资格获取来源')->options([
+                'drive_reservation' => '预约试驾'
+            ])->default('source_type');
+            $form->number('limit_times', '可抽奖次数')->default(1);
+        });
 
         // 保存回调
         $form->saved(function (Form $form) {

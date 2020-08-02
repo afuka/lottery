@@ -7,7 +7,7 @@ trait ErrConsoler
     protected $err = '';
     protected $errCode = '';
 
-    public function setErr(string $err, int $errCode = 0)
+    public function setErr(int $errCode = 1, string $err)
     {
         $this->err = $err;
         $this->errCode = $errCode;

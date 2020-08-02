@@ -64,8 +64,21 @@ app\Helpers
 ```
 # 活动的key
 ACTIVITY_{活动Id}   存储内容，序列化后的活动对象, 需要unserialize下
+
 DRIVE_RESERVATION_EXISTS_{活动Id}_{source来源组}_{手机号}    唯一识别标识为是否已经留资过 活动+来源+手机
+DRIVE_RESERVATION_INFO_{记录Id}      缓存这个提交记录的部分主要信息, 有过期时间
+
 PRIZE_GROUP_{奖品组Id}   存储奖品组的内容,序列化后的活动对象, 需要unserialize下
 PRIZE_GROUP_PRIZES_{奖品组Id}  存储奖品组中奖品的内容,序列化后的活动对象, 需要unserialize下
+
+LOTTERY_TIMES_LIMIT_{奖品组Id}_{资格来源}_{记录Id}  计数器，当前多少次了
+LOTTERY_GROUP_LOCK_{奖品组Id}  奖品组抽奖锁
+LOTTERY_PRIZE_SEND_COUNT_{奖品Id}  计数器，记录当前发出去多少个这个商品了
+LOTTERY_PRIZE_GET_USER_LIMIT_BY_GROUP_{奖品组Id}_{唯一识别值}   计数器，记录这个唯一识别的值中奖几次
+LOTTERY_PRIZE_GET_USER_LIMIT_BY_ACTIVITY_{活动Id}_{唯一识别值}   计数器，记录这个唯一识别的值中奖几次
+LOTTERY_PRIZE_TICKETS_POOL_{奖品Id}  有序集合，来存储奖券的所有的券码
+LOTTERY_PRIZE_TICKETS_ALIVE_{奖品Id}  有序集合，来存储奖券剩余的券码
+LOTTERY_USER_GET_PRIZE_LOG_{获奖记录日志Id}   缓存数据，到时候校验的时候用, 有过期时间
+LOTTERY_LEAVE_INFO_FLAG_{获奖记录日志Id}   判断是否已经留资了
 ```
 

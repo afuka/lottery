@@ -21,6 +21,7 @@ class CreatePrizeLogsTable extends Migration
             $table->integer('prize_id')->default(0); // 奖品id
             $table->enum('source_type', ['', 'drive_reservation'])->default(''); // 抽奖资格来源, drive_reservation 预约试驾
             $table->integer('source_id')->default(0); // 资格来源id
+            $table->string('mobile', 32)->default(''); // 用户手机号
             $table->string('code')->default(0); // 获奖券码
             $table->string('ip')->default('0.0.0.0'); // IP地址
             $table->enum('status', ['-1', '0', '1'])->default('1'); // 状态

@@ -15,6 +15,8 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\SyncDealers::class,
         Commands\ConsumeTask::class,
+        Commands\GeneratePrizeTicketPool::class,
+        Commands\PushDriveReservationsToCrm::class,
     ];
 
     /**

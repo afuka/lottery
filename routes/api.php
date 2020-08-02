@@ -19,4 +19,8 @@ Route::group([
     'middleware' => ['verify.activity'],
 ], function(){
     Route::any('/reserve-drive/create', 'DriveReservationController@create');  // 填写预约试驾信息
+
+    Route::any('/lottery/prizes', 'LotteryController@prizes');  // 获取奖品组奖品
+    Route::any('/lottery/draw', 'LotteryController@draw');  // 抽奖
+    Route::any('/lottery/leave-info', 'LotteryController@leaveInfo');  // 中奖留资
 });

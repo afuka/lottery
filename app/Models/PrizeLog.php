@@ -11,6 +11,15 @@ class PrizeLog extends Model
     ];
 
     /**
+     * 可以被批量赋值的属性
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'activity_id','group_id','prize_id','source_type','source_id','code','ip', 'mobile'
+    ];
+
+    /**
      * 归属活动
      *
      * @return void

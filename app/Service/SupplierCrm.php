@@ -82,4 +82,28 @@ class SupplierCrm
         
         return true;
     }
+
+    /**
+     * 推送销售线索记录
+     */
+    public function pushRecord(Models\DriveReservation $record)
+    {
+        try {
+            $activity = Models\Activity::where('id', '=', $record->activity_id)->firstOrFail();
+        } catch (\Exception $e) {
+            $this->setErr(ErrEnum::RUNTIME_ERR, $e->getMessage());
+            return false;
+        }
+
+        try {
+            $this->handler->pushRecord($activity, $record);
+            $record->crm_sync = '2';
+            $record->save();
+        } catch (\Exception $e) {
+            $record->crm_sync = '-1';
+            $record->save();
+        }
+
+        return true;
+    }
 }
