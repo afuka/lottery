@@ -10,4 +10,16 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    /**
+     * 返回固定格式的数据
+     */
+    public function result(int $errCode, string $errMsg = '', $data = [])
+    {
+        return [
+            'error_code' => $errCode,
+            'error_msg'  => $errMsg,
+            'data' => $data,
+        ];
+    }
 }

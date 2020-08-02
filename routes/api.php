@@ -13,7 +13,10 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// /api/activity/{$activity_id}
+Route::group([
+    'prefix' => '/activity/{activityId?}',
+    'middleware' => ['verify.activity'],
+], function(){
+    Route::any('/reserve-drive/create', 'DriveReservationController@create');  // 填写预约试驾信息
 });
