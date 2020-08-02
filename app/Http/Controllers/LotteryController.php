@@ -163,6 +163,12 @@ class LotteryController extends Controller
 
         Redis::set($existsKey, '1');
 
+        // 发送短信
+        if(!empty($record->code)) {
+            $sms = new Sms();
+            $res = $sms->send($mobile, $record->code);
+        }
+
         return $this->result(0, 'success', []);
     }
 }
