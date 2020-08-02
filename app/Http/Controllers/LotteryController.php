@@ -33,6 +33,7 @@ class LotteryController extends Controller
 
         try {
             $ser = new Lottery($groupSeri);
+            $ser->setRequest($request);
         } catch (\Exception $e) {
             return $this->result(ErrEnum::CONSTRUCT_ERR, $e->getMessage(), []);
         }
@@ -75,6 +76,7 @@ class LotteryController extends Controller
         
         try {
             $ser = new Lottery($groupSeri);
+            $ser->setRequest($request);
         } catch (\Exception $e) {
             return $this->result(ErrEnum::CONSTRUCT_ERR, $e->getMessage(), []);
         }
