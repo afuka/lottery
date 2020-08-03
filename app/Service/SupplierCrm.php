@@ -97,10 +97,11 @@ class SupplierCrm
 
         try {
             $this->handler->pushRecord($activity, $record);
-            $record->crm_sync = '2';
+            $record->sync_status = '1';
             $record->save();
         } catch (\Exception $e) {
-            $record->crm_sync = '-1';
+            echo $e->getMessage(), "\n";
+            $record->sync_status = '-1';
             $record->save();
         }
 

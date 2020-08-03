@@ -52,7 +52,7 @@ class DriveReservationController extends AdminController
 
         $grid->column('id', 'Id');
         $grid->column('activity.name', '归属活动');
-        $grid->column('source', '来源')->help('同一活动可能不同来源，唯一识别标识为 活动+来源+手机号');
+        $grid->column('source', '来源')->help('同一活动可能不同来源，唯一识别标识为 活动+来源+手机号')->hide();
         $grid->column('mobile', '手机号');
         $grid->column('name', '姓名');
         $grid->column('province', '省');
@@ -60,12 +60,17 @@ class DriveReservationController extends AdminController
         $grid->column('dealer_code', '经销商代码');
         $grid->column('dealer', '经销商');
         $grid->column('crm_sync', '同步CRM')->display(function($status) {
-            $dic = [// 是否需要同步到crm，0不需要同步，1待同步，2，同步成功，-1 同步失败
-                '0' => '否', '1' => '待同步',
-                '2' => '同步成功', '-1' => '同步失败',
+            $dic = [// 是否需要同步到crm
+                '0' => '否', '1' => '需要同步',
             ];
             return Arr::get($dic, $status, '');
-        });
+        })->hide();
+        $grid->column('sync_status', '同步状态')->display(function($status) {
+            $dic = [// 同步到crm
+                '0' => '待推送', '1' => '成功', '-1' => '推送失败'
+            ];
+            return Arr::get($dic, $status, '');
+        })->hide();
         $grid->column('created_at', '创建时间')->date('Y-m-d H:i:s');
 
         // 操作
@@ -106,10 +111,15 @@ class DriveReservationController extends AdminController
         $show->field('dealer', '经销商');
         $show->field('media', '媒体来源');
         $show->field('ip', 'Ip');
+        $show->field('crm_sync', '同步CRM')->display(function($status) {
+            $dic = [
+                '0' => '否', '1' => '需要同步',
+            ];
+            return Arr::get($dic, $status, '');
+        });
         $show->field('crm_sync', 'Crm 同步状态')->display(function($status) {
-            $dic = [// 是否需要同步到crm，0不需要同步，1待同步，2，同步成功，-1 同步失败
-                '0' => '否', '1' => '待同步',
-                '2' => '同步成功', '-1' => '同步失败',
+            $dic = [
+                '0' => '待推送', '1' => '成功', '-1' => '推送失败'
             ];
             return Arr::get($dic, $status, '');
         });

@@ -27,7 +27,8 @@ class CreateDriveReservationsTable extends Migration
             $table->string('dealer', 64); // 经销商名称
             $table->string('media', 32)->default(''); // 媒体来源
             $table->string('ip')->default('0.0.0.0'); // IP地址
-            $table->enum('crm_sync', ['0', '1', '2', '-1'])->default('0'); // 是否需要同步到crm，0不需要同步，1待同步，2，同步成功，-1 同步失败
+            $table->enum('crm_sync', ['0', '1', '2', '-1'])->default('0'); // 是否需要同步到crm，0不需要同步，1待同步
+            $table->enum('sync_status', ['0', '1', '-1'])->default('0'); // 同步到crm的状态，0待同步，1，同步成功，-1 同步失败
             $table->string('ordertime', 32)->default(''); // 预约时间
             $table->string('buytime', 32)->default(''); // 预计购买时间
             $table->enum('status', ['-1', '0', '1'])->default('1'); // 状态
