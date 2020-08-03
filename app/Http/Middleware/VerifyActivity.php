@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Redis;
 use App\Models\Activity;
+use Illuminate\Support\Arr;
 
 class VerifyActivity
 {
@@ -37,6 +38,21 @@ class VerifyActivity
 
         $request->activity = $activitySeri;
 
-        return $next($request);
+        $response = $next($request);
+
+        // 配置允许跨域请求
+        $origin = $request->server('HTTP_ORIGIN') ? $request->server('HTTP_ORIGIN') : '';
+        $config = $activitySeri->config;
+        $allowOrigins = explode(',',Arr::get($config, 'origin', ''));
+
+        if(in_array($origin, $allowOrigins)) {
+            $response->header('Access-Control-Allow-Origin', $origin);
+            $response->header('Access-Control-Allow-Headers', 'Origin, Content-Type, Cookie, X-CSRF-TOKEN, Accept, Authorization, X-XSRF-TOKEN');
+            $response->header('Access-Control-Expose-Headers', 'Authorization, authenticated');
+            $response->header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, OPTIONS');
+            $response->header('Access-Control-Allow-Credentials', 'true');
+        }
+
+        return $response;
     }
 }

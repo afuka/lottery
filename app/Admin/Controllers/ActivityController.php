@@ -10,6 +10,11 @@ use Encore\Admin\Show;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Redis;
 
+/**
+ * config 配置内容说明
+ *      mobile_verify  是否短信验证码验证真实性
+ *      origin      允许跨域的域名
+ */
 class ActivityController extends AdminController
 {
     /**

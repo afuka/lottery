@@ -46,7 +46,9 @@ class PrizeGroupController extends AdminController
         // 行显示条件
         $grid->model()->where('status', '<>', '-1')->orderBy('id', 'DESC');
 
-        $grid->column('id', 'Id');
+        $grid->column('id', 'Id')->display(function($id) {
+            return $id . '「' . base64_encode($id) . '」';
+        });
         $grid->column('activity.name', '所属活动');
         $grid->column('name', '奖品组');
         $grid->column('user_limit_mode', '用户限制')->display(function($limit) {

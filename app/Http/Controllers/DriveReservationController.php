@@ -72,7 +72,7 @@ class DriveReservationController extends Controller
         ]));
 
         return $this->result(0, 'success', [
-            'source_id' => $id, // 记录id
+            'source_id' => base64_encode($id), // 记录id
             'souce_type' => 'drive_reservation', // 记录来源
             'can_lottery' => 1, // 是否可去抽奖
         ]);

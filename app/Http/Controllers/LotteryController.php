@@ -22,7 +22,7 @@ class LotteryController extends Controller
      */
     public function prizes(Request $request)
     {
-        $prizeGroupId = $request->get('prize_group_id', 0);
+        $prizeGroupId = base64_decode($request->get('prize_group_id', 0));
         if(empty($prizeGroupId)) return $this->result(ErrEnum::PARAM_ERR, '请指定奖品组', []);
         try {
             $groupSeri = unserialize(Redis::get('PRIZE_GROUP_' . $prizeGroupId));
@@ -65,8 +65,14 @@ class LotteryController extends Controller
      */
     public function draw(Request $request)
     {
-        $prizeGroupId = $request->get('prize_group_id', 0);
+        $prizeGroupId = base64_decode($request->get('prize_group_id', 0));
         if(empty($prizeGroupId)) return $this->result(ErrEnum::PARAM_ERR, '请指定奖品组', []);
+        // 是否有抽奖资格来源类型的限制
+        $sourceType = $request->get('source_type', '');
+        $sourceId = base64_decode($request->get('source_id', ''));
+        if(empty($sourceType)) return $this->result(ErrEnum::PARAM_ERR, '请指定资格来源类型', []);
+        if(empty($sourceId)) return $this->result(ErrEnum::PARAM_ERR, '请指定资格来源', []);
+
         try {
             $groupSeri = unserialize(Redis::get('PRIZE_GROUP_' . $prizeGroupId));
             if(empty($groupSeri)) return $this->result(ErrEnum::NOT_EXISTS_ERR, '该奖品组不存在或已停用', []);
@@ -80,12 +86,6 @@ class LotteryController extends Controller
         } catch (\Exception $e) {
             return $this->result(ErrEnum::CONSTRUCT_ERR, $e->getMessage(), []);
         }
-
-        // 是否有抽奖资格来源类型的限制
-        $sourceType = $request->get('source_type', '');
-        $sourceId = $request->get('source_id', '');
-        if(empty($sourceType)) return $this->result(ErrEnum::PARAM_ERR, '请指定资格来源类型', []);
-        if(empty($sourceId)) return $this->result(ErrEnum::PARAM_ERR, '请指定资格来源', []);
 
         $ownCheckValue = ''; // 验证这个记录是否是这个人的
         if($sourceType == 'drive_reservation') {
@@ -103,8 +103,8 @@ class LotteryController extends Controller
         return $this->result(0, 'success', [
             'is_prize' => empty($prize) ? '0' : '1', // 是否中奖, 0 否， 1中奖
             'prize' => empty($prize) ? [] : [
-                'id' => $prize->log_id,
-                'prize_id' => $prize->id,
+                'id' => base64_encode($prize->log_id),
+                'prize_id' => base64_encode($prize->id),
                 'name' => $prize->name,
                 'bz' => $prize->bz,
                 'type' => $prize->type,
@@ -122,8 +122,8 @@ class LotteryController extends Controller
      */
     public function leaveInfo(Request $request)
     {
-        $logId = $request->get('id', 0);
-        $prizeId = $request->get('prize_id', 0);
+        $logId = base64_decode($request->get('id', 0));
+        $prizeId = base64_decode($request->get('prize_id', 0));
         if(empty($logId)) return $this->result(ErrEnum::PARAM_ERR, '请指定获奖记录', []);
         if(empty($prizeId)) return $this->result(ErrEnum::PARAM_ERR, '请指定获奖记录2', []);
 
