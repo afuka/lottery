@@ -53,7 +53,7 @@ class PrizeController extends AdminController
             // 奖品类型，physical实物，coupon券，virtual虚拟奖
             $dic = ['physical' => '实物', 'coupon' => '券', 'virtual' => '虚拟奖'];
             return Arr::get($dic, $type, '');
-        });
+        })->help('其中券类型，需要进行预置');
         $grid->column('probability', '概率')->display(function($probability) {
             return ($probability / 100) . '%';
         });
