@@ -54,7 +54,9 @@ class PrizeController extends AdminController
             $dic = ['physical' => '实物', 'coupon' => '券', 'virtual' => '虚拟奖'];
             return Arr::get($dic, $type, '');
         });
-        $grid->column('probability', '概率');
+        $grid->column('probability', '概率')->display(function($probability) {
+            return ($probability / 100) . '%';
+        });
         $grid->column('is_default', '默认奖')->display(function($status) {
             $statusDic = [
                 '0' => '<span style="color:red;">否</span>',
