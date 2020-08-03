@@ -111,7 +111,7 @@ class PrizeController extends AdminController
         ])->default('physical');
         $form->number('total', '奖品总数');
         // $form->number('stock', __('Stock'));
-        $form->number('probability', '中奖概率')->rules('max:10000|min:0')->help('中奖概率,中奖率:0-10000之间');
+        $form->number('probability', '中奖概率')->rules('max:10000|min:0')->help('中奖概率,中奖率:0-10000之间,其中一个奖品组奖品概率总和不要高于10000');
         $form->radio('is_default', '是否默认奖')->options([
             '0' => '否', '1' => '是'
         ])->default('0')->help('默认奖时，不会校验奖品总数是否发超');
