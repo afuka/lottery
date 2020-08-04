@@ -1,5 +1,19 @@
 # 简易营销互动活动注意事项
 
+部署过程
+```
+git clone https://github.com/afuka/lottery.git 项目目录
+cd 项目目录
+chown -R nobody:nobody storage   其中 nobody 是 nginx 用户，根据配置变动
+wget https://getcomposer.org/download/1.10.10/composer.phar   如果没有安装 composer 的话
+/usr/local/php7/bin/php composer.phar install  或者 composer install
+cp .env.example .env
+/usr/local/php7/bin/php artisan key:generate
+编辑 .env 中的配置
+/usr/local/php7/bin/php artisan storage:link
+
+```
+
 1. 为了效率，将路由和配置均生成缓存
 
 ```
