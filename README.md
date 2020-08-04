@@ -67,6 +67,12 @@ php artisan admin:action Common\\SyncXX --name="什么东西"
 ```
 # 同步经销商 并 生成js文件缓存,其中使用的驱动，在代码中
 php artisan command:sync-dealers
+# 将奖券入库
+php artisan command:generate-prize-tickets-pool
+# 消费后台消息
+php artisan command:comsume-task
+# 同步销售线索
+php artisan command:push-drive-reservations-to-crm
 ```
 
 5. 公共函数位置
