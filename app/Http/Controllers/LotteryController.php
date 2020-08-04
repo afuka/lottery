@@ -45,6 +45,7 @@ class LotteryController extends Controller
             if(!empty($image)) $image = config('filesystems.disks.admin.url') . '/' . $image;
             return [
                 'id' => $item['id'],
+                'prize_id' => base64_encode($item['id']),
                 'name' => $item['name'],
                 'bz' => $item['bz'],
                 'type' => $item['type'],
