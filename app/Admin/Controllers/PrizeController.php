@@ -46,7 +46,9 @@ class PrizeController extends AdminController
         // 行显示条件
         $grid->model()->where('status', '<>', '-1')->orderBy('id', 'DESC');
 
-        $grid->column('id', 'Id');
+        $grid->column('id', 'Id')->display(function($id) {
+            return $id . '「' . base64_encode($id) . '」';
+        });
         $grid->column('prizegroup.name', '所属奖品组');
         $grid->column('name', '奖品名称');
         $grid->column('type', '类型')->display(function($type) {
