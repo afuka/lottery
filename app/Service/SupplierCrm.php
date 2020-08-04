@@ -6,7 +6,7 @@ use App\Repository\Dealers\Northeast;
 use App\Traits\ErrConsoler;
 use App\Models;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Redis;
 
 class SupplierCrm
 {
@@ -95,16 +95,31 @@ class SupplierCrm
             return false;
         }
 
+        //TODO: 东南汽车逻辑, 一个手机号只推送一遍
+        // --------- start ---------
+        $key = 'SYNC_RECORD_TO_CRM_' . $record->activity_id . '_' . $record->mobile;
+        if(Redis::exists($key)) {
+            $record->sync_status = '-1';
+            $record->save();
+        }
+        // --------- end ---------
+
         try {
             $this->handler->pushRecord($activity, $record);
             $record->sync_status = '1';
             $record->save();
+
+            // --------- start ---------
+            Redis::set($key, '1');
+            // --------- end ---------
+
+            return true;
         } catch (\Exception $e) {
             echo $e->getMessage(), "\n";
-            $record->sync_status = '-1';
-            $record->save();
         }
 
-        return true;
+        $record->sync_status = '-1';
+        $record->save();
+
     }
 }

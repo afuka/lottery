@@ -72,7 +72,26 @@ class LotteryController extends Controller
         $sourceType = $request->get('source_type', '');
         $sourceId = base64_decode($request->get('source_id', ''));
         if(empty($sourceType)) return $this->result(ErrEnum::PARAM_ERR, '请指定资格来源类型', []);
-        if(empty($sourceId)) return $this->result(ErrEnum::PARAM_ERR, '请指定资格来源', []);
+        // if(empty($sourceId)) return $this->result(ErrEnum::PARAM_ERR, '请指定资格来源', []);
+
+        // TODO:东南汽车特殊逻辑, 不保存来源的假装抽奖，没中;一个手机号只能进来抽一次
+        // ----------   start  ---------
+        if(empty($sourceId)) {
+            return $this->result(0, 'success', [
+                'is_prize' => '0', // 是否中奖, 0 否， 1中奖
+                'prize' => []
+            ]);
+        }
+        $mobile = $request->get('record_check', '');
+        $_key = 'DONGNAN_LOTTER_MOBILE_LIMIT_' . $prizeGroupId . '_' . $mobile;
+        if(Redis::exists($_key)) {
+            return $this->result(0, 'success', [
+                'is_prize' => '0', // 是否中奖, 0 否， 1中奖
+                'prize' => []
+            ]);
+        }
+        Redis::set($_key, '1');
+        // ----------   end  ---------
 
         try {
             $groupSeri = unserialize(Redis::get('PRIZE_GROUP_' . $prizeGroupId));

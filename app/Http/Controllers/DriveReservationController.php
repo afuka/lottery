@@ -28,11 +28,28 @@ class DriveReservationController extends Controller
         if(Arr::get($request->activity->config, 'mobile_verify', '0') == '1') {
             //TODO: 验证短信验证码
         }
+
+        // $existsKey = 'DRIVE_RESERVATION_EXISTS_' 
+        //     . $request->activity->id . '_' 
+        //     . $request->get('source', 'default') . '_' 
+        //     . $request->get('mobile');
+        // if(Redis::exists($existsKey)) return $this->result(ErrEnum::PARAM_ERR, '您已经提交过,请勿重复提交', []);
+
+        // TODO: 东南汽车做的特殊处理
+        // ----------   start  ---------
         $existsKey = 'DRIVE_RESERVATION_EXISTS_' 
             . $request->activity->id . '_' 
             . $request->get('source', 'default') . '_' 
-            . $request->get('mobile');
-        if(Redis::exists($existsKey)) return $this->result(ErrEnum::PARAM_ERR, '您已经提交过,请勿重复提交', []);
+            . $request->get('mobile')
+            . $request->get('crm_sync', '0');
+        if(Redis::exists($existsKey)) {
+            return $this->result(0, 'success', [
+                'source_id' => base64_encode(0), // 记录id
+                'souce_type' => 'drive_reservation', // 记录来源
+                'can_lottery' => 1, // 是否可去抽奖
+            ]);
+        }
+        // ----------   end  ---------
         Redis::set($existsKey, '1');
 
         $data = [
