@@ -76,6 +76,10 @@ class LotteryController extends Controller
 
         // TODO:东南汽车特殊逻辑, 不保存来源的假装抽奖，没中;一个手机号只能进来抽一次
         // ----------   start  ---------
+        $time = time();
+        if($time < strtotime('2020-08-06 19:50:00')) {
+            return $this->result(ErrEnum::PARAM_ERR, '还未到活动时间，请耐心等待', []);
+        }
         if(empty($sourceId)) {
             return $this->result(0, 'success', [
                 'is_prize' => '0', // 是否中奖, 0 否， 1中奖
