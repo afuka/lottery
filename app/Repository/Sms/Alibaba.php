@@ -9,7 +9,7 @@ use Illuminate\Support\Arr;
 
 class Alibaba
 {
-    public function send($mobile, $code, $sign = '八零五')
+    public function send($mobile, $code, $sign = '东南汽车')
     {
         AlibabaCloud::accessKeyClient('LTAI4FyU8R55hVYh2BXqP36g', 'qnfpf0acPWsOZKslX9tlAqTzCTILh4')
             ->regionId('cn-hangzhou')
@@ -28,7 +28,7 @@ class Alibaba
                         'RegionId' => "cn-hangzhou",
                         'PhoneNumbers' => $mobile,
                         'SignName' => $sign,
-                        'TemplateCode' => "SMS_198880037",
+                        'TemplateCode' => "SMS_198915985",
                         'TemplateParam' => json_encode([
                             'code' => $code
                         ]),
