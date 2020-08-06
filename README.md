@@ -20,34 +20,31 @@ cp .env.example .env
 /usr/local/php7/bin/php artisan key:generate
 编辑 .env 中的配置
 /usr/local/php7/bin/php artisan storage:link
-
 ```
 
 1. 为了效率，将路由和配置均生成缓存
 
 ```
 # 相关建立
-php artisan config:cache 
-php artisan route:cache 
-php artisan package:discover
-php artisan event:cache
-php artisan view:cache
+/usr/local/php7/bin/php artisan config:cache 
+/usr/local/php7/bin/php artisan route:cache 
+/usr/local/php7/bin/php artisan package:discover
+/usr/local/php7/bin/php artisan event:cache
+/usr/local/php7/bin/php artisan view:cache
 
 # 相关清理
-php artisan cache:clear
-php artisan config:clear
-php artisan event:clear
-php artisan optimize:clear
-php artisan route:clear
-php artisan view:clear 
+/usr/local/php7/bin/php artisan cache:clear
+/usr/local/php7/bin/php artisan config:clear
+/usr/local/php7/bin/php artisan event:clear
+/usr/local/php7/bin/php artisan optimize:clear
+/usr/local/php7/bin/php artisan route:clear
+/usr/local/php7/bin/php artisan view:clear 
 ```
 
 
 2. 配置资源文件可对外访问
 
 ```
-# 建立软连接
-php artisan storage:link
 # 缓存文件生成位置
 /storage/app/public/caches
 # 访问方式
