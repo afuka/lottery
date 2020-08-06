@@ -40,7 +40,7 @@ class PushDriveReservationsToCrm extends Command
     public function handle()
     {
         $ser = new SupplierCrm();
-        $records = DriveReservation::where('status', '=', '1')->where('crm_sync', '=', '1')->get();
+        $records = DriveReservation::where('status', '=', '1')->where('crm_sync', '=', '1')->limit(1000)->get();
         foreach ($records as $record) {
             $ser->pushRecord($record);
         }
