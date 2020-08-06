@@ -136,9 +136,11 @@ class Northeast
                     'referer' => Arr::get($activity->config, 'referer', ''),
                 ]
             ]);
-            $result = json_decode($response->getBody()->getContents(), true);
+            $content = $response->getBody()->getContents();
+            var_dump($content);
+            $result = json_decode($content, true);
             if(empty($result) || Arr::get($result, 'status') != 200) {
-                throw new \Exception('推送响应异常:' . Arr::get($result, 'message', '') . $response->getBody()->getContents(), 1);
+                throw new \Exception('推送响应异常:' . Arr::get($result, 'message', ''), 1);
             }
         } catch (ClientException $e) {
             throw new \Exception($e->getMessage(), 1);
